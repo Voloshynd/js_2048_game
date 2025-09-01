@@ -1,9 +1,15 @@
 'use strict';
 
 const Game = require('../modules/Game.class');
-const game = new Game();
-
 const btn = document.querySelector('.button');
+const game = new Game(
+  document.querySelector('.game-field'),
+  document.querySelector('.message-start'),
+  document.querySelector('.message-lose'),
+  document.querySelector('.message-win'),
+  document.querySelector('.game-score'),
+  document.querySelector('.info'),
+);
 
 btn.addEventListener('click', () => {
   if (btn.classList.contains('start')) {

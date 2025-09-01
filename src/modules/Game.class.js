@@ -1,4 +1,4 @@
-/* eslint-disable prettier/prettier */
+/* eslint-disable function-paren-newline */
 'use strict';
 
 class Game {
@@ -18,22 +18,20 @@ class Game {
    */
 
   static length = 4;
-  constructor() {
+  constructor(field, startMsg, loseMsg, winMsg, scoreGame, info) {
     // eslint-disable-next-line no-console
-    this.initialState = Array.from({ length: Game.length }, () =>
-      Array(Game.length).fill(0));
-
+    this.initialState = this.createInitialState();
     this.sum = 0;
     this.score = 0;
     this.lastGeneratedCell = {};
     this.startBtn = null;
 
-    this.field = document.querySelector('.game-field');
-    this.startMsg = document.querySelector('.message-start');
-    this.loseMsg = document.querySelector('.message-lose');
-    this.winMsg = document.querySelector('.message-win');
-    this.scoreGame = document.querySelector('.game-score');
-    this.info = document.querySelector('.info');
+    this.field = field;
+    this.startMsg = startMsg;
+    this.loseMsg = loseMsg;
+    this.winMsg = winMsg;
+    this.scoreGame = scoreGame;
+    this.info = info;
   }
 
   moveLeft() {
@@ -253,13 +251,12 @@ class Game {
   }
 
   // Add your own methods here
+  createInitialState() {
+    return [...Array(Game.length)].map(() => Array(Game.length).fill(0));
+  }
+
   startNewGame() {
-    this.initialState = [
-      [0, 0, 0, 0],
-      [0, 0, 0, 0],
-      [0, 0, 0, 0],
-      [0, 0, 0, 0],
-    ];
+    this.initialState = this.createInitialState();
 
     this.score = 0;
     this.scoreGame.textContent = this.score;
@@ -469,18 +466,11 @@ class Game {
   createModal(str) {
     const overlay = document.createElement('div');
     const overlayContent = document.createElement('div');
-
-    overlayContent.style.cssText = `
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      height: 100%;
-    `;
-
     const paragraf = document.createElement('p');
 
-    paragraf.style.color = '#776e65';
+    overlay.className = 'overlay';
+    overlayContent.className = 'overlay-content';
+    paragraf.className = 'modal-message';
 
     let btnText = '';
 
@@ -497,34 +487,8 @@ class Game {
     btn.className = 'start-game';
     btn.textContent = btnText;
 
-    btn.style.cssText = `
-      background-color: #8f7a66;
-      height: 40px;
-      line-height: 40px;
-      color: #f9f6f2;
-      border-radius: 3px;
-      padding: 0 20px;
-      cursor: pointer;
-      border: none;
-      font-weight: bold;
-    `;
-
     overlayContent.append(paragraf, btn);
     overlay.append(overlayContent);
-
-    overlay.style.cssText = `
-      position: absolute;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      z-index: 1;
-      left: 0;
-      top: 0;
-      width: 100%;
-      height: 100%;
-      background-color: rgba(238, 228, 218, 0.73);
-    `;
 
     btn.addEventListener('click', () => {
       this.startNewGame();
@@ -540,18 +504,8 @@ class Game {
     const scoreOverlayElem = document.createElement('span');
 
     this.info.style.position = 'relative';
-
-    scoreOverlayElem.classList.add('score-overlay');
+    scoreOverlayElem.className = 'score-overlay';
     scoreOverlayElem.textContent = `+${num}`;
-
-    scoreOverlayElem.style.cssText = `
-      position: absolute;
-      font-weight: 900;
-      top: 50%;
-      left: 28%;
-      pointer-events: none;
-    `;
-
     this.scoreGame.after(scoreOverlayElem);
 
     const disappear = [
